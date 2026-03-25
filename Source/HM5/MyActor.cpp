@@ -1,27 +1,61 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MyActor.cpp
 
 
 #include "MyActor.h"
 
-// Sets default values
 AMyActor::AMyActor()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
-
-// Called when the game starts or when spawned
 void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	FVector ActorLocation = GetActorLocation();
+
+	SetActorLocation(FVector(0, 50, 0));
+	PrintLogLocation();
+    for (int32 i = 0; i < 10; i++)
+    {
+        int32 RandomAction = FMath::RandRange(0, 1);
+
+        if (RandomAction == 0) {
+            Move();
+        }
+        else {
+            Turn();
+        }
+    }
 }
 
-// Called every frame
-void AMyActor::Tick(float DeltaTime)
+void AMyActor::Move()
 {
-	Super::Tick(DeltaTime);
+    float RandomX = FMath::RandRange(-MoveDistance, MoveDistance);
+    float RandomY = FMath::RandRange(-MoveDistance, MoveDistance);
 
+    FVector NewLocation = GetActorLocation() + FVector(RandomX, RandomY, 0.0f);
+
+    SetActorLocation(NewLocation);
+
+    PrintLogLocation();
+}
+
+void AMyActor::Turn()
+{
+    FRotator NewRotation = GetActorRotation() + FRotator(0.0f, RotationAngle, 0.0f);
+    SetActorRotation(NewRotation);
+
+    PrintLogLocation();
+}
+
+void AMyActor::PrintLogLocation()
+{
+    FVector Loc = GetActorLocation();
+    FString LogMsg = FString::Printf(TEXT("Location: X=%.2f, Y=%.2f, Z=%.2f"), Loc.X, Loc.Y, Loc.Z);
+
+    if (GEngine)
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, LogMsg);
+    }
 }
 

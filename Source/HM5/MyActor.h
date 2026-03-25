@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MyActor.h
 
 #pragma once
 
@@ -12,15 +12,19 @@ class HM5_API AMyActor : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AMyActor();
+	void Move();
+	void Turn();
+	void PrintLogLocation();
 
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float MoveDistance = 100.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float RotationAngle = 45.0f;
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+private:
 
 };
